@@ -1,0 +1,542 @@
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;700&display=swap");
+
+:root {
+  --bg: #f2efe7;
+  --bg-2: #fbfaf6;
+  --panel: rgba(255, 255, 255, 0.82);
+  --panel-strong: rgba(255, 255, 255, 0.95);
+  --line: rgba(45, 54, 66, 0.12);
+  --line-strong: rgba(45, 54, 66, 0.18);
+  --text: #1e2a33;
+  --muted: #66737d;
+  --accent: #b5522d;
+  --accent-soft: rgba(181, 82, 45, 0.1);
+  --blue: #2d5870;
+  --green: #3d7a57;
+  --shadow: 0 24px 60px rgba(35, 47, 58, 0.12);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+  margin: 0;
+}
+
+body {
+  font-family: "Space Grotesk", system-ui, sans-serif;
+  color: var(--text);
+  background:
+    radial-gradient(circle at top left, rgba(181, 82, 45, 0.08), transparent 28%),
+    radial-gradient(circle at 80% 10%, rgba(45, 88, 112, 0.08), transparent 26%),
+    linear-gradient(180deg, #f9f7f0 0%, var(--bg) 100%);
+}
+
+button,
+textarea {
+  font: inherit;
+}
+
+button {
+  border: 0;
+  cursor: pointer;
+}
+
+.appShell {
+  width: min(1440px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 24px 0 32px;
+  display: grid;
+  gap: 16px;
+}
+
+.heroPanel,
+.modeBar,
+.contentGrid > * {
+  border: 1px solid var(--line);
+  background: var(--panel);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow);
+}
+
+.heroPanel {
+  display: flex;
+  justify-content: space-between;
+  gap: 24px;
+  align-items: end;
+  border-radius: 28px;
+  padding: 26px;
+  position: relative;
+  overflow: hidden;
+}
+
+.heroPanel::after {
+  content: "";
+  position: absolute;
+  inset: auto -10% -60% auto;
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(181, 82, 45, 0.14), transparent 65%);
+  pointer-events: none;
+}
+
+.eyebrow {
+  margin: 0 0 8px;
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.heroPanel h1,
+.panelTitleRow h2,
+.workflowCard h3,
+.resultCard h3,
+.resultBlock h4 {
+  margin: 0;
+  font-family: "Space Grotesk", system-ui, sans-serif;
+}
+
+.heroPanel h1 {
+  font-size: clamp(2rem, 4vw, 3.8rem);
+  line-height: 1;
+}
+
+.heroCopy {
+  margin: 14px 0 0;
+  max-width: 60ch;
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: var(--muted);
+}
+
+.heroMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.badge,
+.stepPill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  padding: 8px 12px;
+  border: 1px solid var(--line-strong);
+  background: rgba(255, 255, 255, 0.75);
+}
+
+.badgeSoft {
+  color: var(--muted);
+}
+
+.modeBar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 22px;
+}
+
+.modeBar button {
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--muted);
+  transition: 160ms ease;
+}
+
+.modeBar button.active {
+  background: #1d2a33;
+  color: #fff;
+}
+
+.modeHint {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 0.92rem;
+  padding-right: 8px;
+}
+
+.contentGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.55fr) minmax(340px, 0.95fr);
+  gap: 16px;
+  align-items: start;
+}
+
+.chatColumn,
+.researchColumn {
+  border-radius: 28px;
+  padding: 18px;
+}
+
+.panelTitleRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  gap: 16px;
+  margin-bottom: 14px;
+}
+
+.panelTitleRow h2 {
+  font-size: 1.35rem;
+}
+
+.panelActions {
+  display: flex;
+  gap: 10px;
+}
+
+.secondaryButton,
+.historyItem,
+.exampleChips button,
+.composer button {
+  transition: 160ms ease;
+}
+
+.secondaryButton {
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid var(--line-strong);
+  color: var(--text);
+}
+
+.secondaryButton:hover,
+.exampleChips button:hover,
+.historyItem:hover,
+.composer button:hover {
+  transform: translateY(-1px);
+}
+
+.messageList {
+  min-height: 420px;
+  max-height: 58vh;
+  overflow: auto;
+  display: grid;
+  gap: 12px;
+  padding-right: 4px;
+}
+
+.emptyState {
+  padding: 26px;
+  border: 1px dashed var(--line-strong);
+  border-radius: 24px;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.emptyState h3,
+.workflowCard h3 {
+  margin: 0 0 10px;
+  font-size: 1.1rem;
+}
+
+.emptyState p,
+.workflowCard p,
+.resultBlock li,
+.composerMeta,
+.stepRow p,
+.smallNote,
+.muted,
+.historyItem span,
+.timestamp,
+.messageMeta span {
+  color: var(--muted);
+}
+
+.exampleChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.exampleChips button {
+  background: #fff;
+  color: var(--text);
+  border: 1px solid var(--line-strong);
+  border-radius: 999px;
+  padding: 9px 12px;
+  text-align: left;
+}
+
+.messageBubble,
+.workflowCard,
+.resultCard {
+  border-radius: 22px;
+  border: 1px solid var(--line);
+  background: var(--panel-strong);
+}
+
+.messageBubble {
+  padding: 16px;
+}
+
+.userBubble {
+  background: linear-gradient(180deg, rgba(45, 88, 112, 0.08), rgba(255, 255, 255, 0.95));
+}
+
+.assistantBubble {
+  background: linear-gradient(180deg, rgba(181, 82, 45, 0.05), rgba(255, 255, 255, 0.95));
+}
+
+.messageMeta,
+.resultHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 10px;
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.78rem;
+}
+
+.messageBody {
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+
+.messageBody h2,
+.messageBody h3,
+.messageBody h4 {
+  margin: 0.6rem 0 0.25rem;
+}
+
+.messageBody code,
+.resultSummary code {
+  font-family: "IBM Plex Mono", monospace;
+  background: rgba(29, 42, 51, 0.08);
+  padding: 2px 6px;
+  border-radius: 6px;
+}
+
+.composer {
+  margin-top: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.composer textarea {
+  width: 100%;
+  resize: vertical;
+  min-height: 112px;
+  border-radius: 20px;
+  border: 1px solid var(--line-strong);
+  background: rgba(255, 255, 255, 0.92);
+  padding: 14px 16px;
+  color: var(--text);
+  outline: none;
+  line-height: 1.55;
+}
+
+.composer textarea:focus {
+  border-color: rgba(181, 82, 45, 0.55);
+  box-shadow: 0 0 0 4px rgba(181, 82, 45, 0.08);
+}
+
+.composerFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 14px;
+}
+
+.composer button {
+  padding: 12px 18px;
+  border-radius: 999px;
+  background: linear-gradient(135deg, var(--accent), #d07236);
+  color: #fffaf6;
+  box-shadow: 0 12px 28px rgba(181, 82, 45, 0.18);
+}
+
+.composer button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.workflowCard,
+.resultCard,
+.historyList {
+  margin-top: 14px;
+}
+
+.workflowCard,
+.resultCard {
+  padding: 18px;
+}
+
+.stepList {
+  display: grid;
+  gap: 10px;
+}
+
+.stepRow {
+  border-radius: 18px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.8);
+  padding: 12px 14px;
+}
+
+.stepRow.running {
+  border-color: rgba(45, 88, 112, 0.35);
+  background: rgba(45, 88, 112, 0.08);
+}
+
+.stepRow.done {
+  border-color: rgba(61, 122, 87, 0.35);
+  background: rgba(61, 122, 87, 0.08);
+}
+
+.stepRow.error {
+  border-color: rgba(177, 48, 39, 0.35);
+  background: rgba(177, 48, 39, 0.08);
+}
+
+.stepHeader {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.stepPill.pending {
+  color: var(--muted);
+}
+
+.stepPill.running {
+  color: var(--blue);
+  border-color: rgba(45, 88, 112, 0.3);
+  background: rgba(45, 88, 112, 0.08);
+}
+
+.stepPill.done {
+  color: var(--green);
+  border-color: rgba(61, 122, 87, 0.3);
+  background: rgba(61, 122, 87, 0.08);
+}
+
+.stepPill.error {
+  color: #a12f29;
+  border-color: rgba(177, 48, 39, 0.3);
+  background: rgba(177, 48, 39, 0.08);
+}
+
+.resultHeader h3 {
+  font-size: 1.1rem;
+  line-height: 1.25;
+}
+
+.resultGrid {
+  display: grid;
+  gap: 14px;
+}
+
+.resultBlock {
+  border-radius: 18px;
+  padding: 14px;
+  background: rgba(255, 255, 255, 0.68);
+  border: 1px solid var(--line);
+}
+
+.resultBlock h4 {
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+
+.resultBlock ul {
+  margin: 0;
+  padding-left: 18px;
+  display: grid;
+  gap: 8px;
+}
+
+.resultSummary {
+  line-height: 1.7;
+}
+
+.historyList {
+  display: grid;
+  gap: 10px;
+}
+
+.historyItem {
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.78);
+  display: grid;
+  gap: 4px;
+}
+
+.historyItem strong {
+  font-size: 0.95rem;
+}
+
+.timestamp,
+.smallNote {
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 0.74rem;
+}
+
+.muted {
+  margin: 0;
+}
+
+@media (max-width: 1120px) {
+  .contentGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 740px) {
+  .appShell {
+    width: min(100%, calc(100% - 18px));
+    padding-top: 10px;
+  }
+
+  .heroPanel,
+  .chatColumn,
+  .researchColumn,
+  .modeBar {
+    border-radius: 20px;
+  }
+
+  .heroPanel {
+    padding: 18px;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .heroMeta,
+  .composerFooter,
+  .panelTitleRow {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .modeBar {
+    flex-wrap: wrap;
+  }
+
+  .modeHint {
+    margin-left: 0;
+    padding-right: 0;
+  }
+
+  .composer button,
+  .secondaryButton {
+    width: 100%;
+  }
+}
