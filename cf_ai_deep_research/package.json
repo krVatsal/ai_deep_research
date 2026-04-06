@@ -1,16 +1,23 @@
 {
-  "name": "cf-ai-deep-research",
+  "name": "cf_ai_deep_research",
   "version": "1.0.0",
-  "description": "AI-powered deep research assistant built on Cloudflare — Llama 3.3, Workflows, and Durable Objects",
+  "description": "Next.js fullstack AI-powered deep research assistant using Cloudflare Workers AI",
   "private": true,
   "scripts": {
-    "dev": "wrangler dev",
-    "deploy": "wrangler deploy",
-    "cf-typegen": "wrangler types"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "next": "^15.3.1",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20241205.0",
-    "typescript": "^5.5.2",
-    "wrangler": "^3.99.0"
+    "@types/node": "^22.14.1",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "typescript": "^5.8.3"
   }
 }
