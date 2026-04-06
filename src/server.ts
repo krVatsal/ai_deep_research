@@ -70,18 +70,42 @@ function summarizeResearch(result: ResearchResult | null): string {
   ].join("\n\n");
 }
 
-async function runTextModel(env: Env, messages: { role: "system" | "user" | "assistant"; content: string }[], maxTokens: number) {
-  const run = env.AI.run as unknown as (
-    model: typeof MODEL,
-    input: { messages: typeof messages; max_tokens: number }
-  ) => Promise<unknown>;
+function extractTextFromAiRunResponse(payload: unknown): string {
+  if (typeof payload === "string") {
+    return payload;
+  }
 
-  const response = await run(MODEL, {
+  if (Array.isArray(payload)) {
+    return payload
+      .map((item) => extractTextFromAiRunResponse(item))
+      .filter(Boolean)
+      .join("\n")
+      .trim();
+  }
+
+  if (!payload || typeof payload !== "object") {
+    return "";
+  }
+
+  const record = payload as Record<string, unknown>;
+  const preferredKeys = ["response", "text", "output_text", "output", "result"];
+
+  for (const key of preferredKeys) {
+    if (!(key in record)) continue;
+    const value = extractTextFromAiRunResponse(record[key]);
+    if (value) return value;
+  }
+
+  return "";
+}
+
+async function runTextModel(env: Env, messages: { role: "system" | "user" | "assistant"; content: string }[], maxTokens: number) {
+  const response = await env.AI.run(MODEL, {
     messages,
     max_tokens: maxTokens
   });
 
-  const text = (response as { response?: string }).response;
+  const text = extractTextFromAiRunResponse(response);
   if (!text) {
     throw new Error("Model returned an empty response.");
   }
