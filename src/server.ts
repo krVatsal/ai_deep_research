@@ -113,6 +113,39 @@ async function runTextModel(env: Env, messages: { role: "system" | "user" | "ass
   return text.trim();
 }
 
+function parseSubQuestionsFromText(text: string): string[] {
+  const match = text.match(/\[[\s\S]*\]/);
+  if (match) {
+    try {
+      const parsed = JSON.parse(match[0]) as unknown;
+      if (Array.isArray(parsed)) {
+        const fromJson = parsed
+          .filter((item): item is string => typeof item === "string")
+          .map((item) => item.trim())
+          .filter(Boolean);
+        if (fromJson.length >= 3) {
+          return fromJson.slice(0, 3);
+        }
+      }
+    } catch {
+      // Fall back to line parsing below.
+    }
+  }
+
+  const lines = text
+    .split(/\r?\n+/)
+    .map((line) => line.replace(/^\s*(?:[-*]|\d+[.)])\s*/, "").trim())
+    .filter(Boolean)
+    .map((line) => (line.endsWith("?") ? line : `${line}?`));
+
+  const unique = [...new Set(lines)];
+  if (unique.length >= 3) {
+    return unique.slice(0, 3);
+  }
+
+  return [];
+}
+
 async function generateSubQuestions(env: Env, question: string): Promise<string[]> {
   const text = await runTextModel(
     env,
@@ -130,19 +163,9 @@ async function generateSubQuestions(env: Env, question: string): Promise<string[
     300
   );
 
-  const match = text.match(/\[[\s\S]*\]/);
-  if (!match) {
-    throw new Error(`Could not parse sub-questions from model output: ${text}`);
-  }
-
-  const parsed = JSON.parse(match[0]) as unknown;
-  if (!Array.isArray(parsed)) {
-    throw new Error("Sub-question output was not an array.");
-  }
-
-  const subQuestions = parsed.filter((item): item is string => typeof item === "string").map((item) => item.trim());
+  const subQuestions = parseSubQuestionsFromText(text);
   if (subQuestions.length !== 3) {
-    throw new Error(`Expected exactly 3 sub-questions, received ${subQuestions.length}.`);
+    throw new Error(`Could not parse sub-questions from model output: ${text}`);
   }
 
   return subQuestions;
